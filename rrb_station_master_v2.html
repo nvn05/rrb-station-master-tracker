@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RRB Station Master | Preparation Dashboard</title>
+<style>
+:root{--bg:#f4f6fb;--card:#fff;--text:#172033;--muted:#64748b;--line:#e5eaf2;--blue:#2563eb;--nav:#111c34;--green:#16a34a;--red:#dc2626;--orange:#d97706}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer;border:0;border-radius:9px;padding:10px 14px;background:var(--blue);color:#fff;font-weight:650}button:hover{filter:brightness(.95)}
+.app{display:grid;grid-template-columns:245px 1fr;min-height:100vh}.sidebar{background:var(--nav);color:#fff;padding:24px 15px;position:sticky;top:0;height:100vh}
+.brand{font-size:18px;font-weight:800;padding:5px 10px 24px;line-height:1.4}.brand span{color:#93c5fd}.nav-label{font-size:11px;color:#91a0bb;text-transform:uppercase;letter-spacing:1.3px;padding:10px}
+.nav button{display:block;width:100%;text-align:left;background:transparent;color:#d8e1f1;padding:12px;margin:3px 0;font-weight:550}.nav button.active,.nav button:hover{background:#263957;color:#fff}
+.main{padding:27px;max-width:1500px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}.top h1{margin:0;font-size:25px}.sub{color:var(--muted);font-size:13px;margin-top:6px}
+.page{display:none}.page.active{display:block}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 4px 15px #17203308;margin-bottom:15px}
+.metric small,.muted{color:var(--muted)}.metric strong{display:block;font-size:28px;margin:9px 0 3px}.metric .hint{font-size:12px;color:var(--muted)}
+h2{font-size:19px;margin:8px 0 15px}h3{font-size:15px;margin:0 0 8px}
+.progress{height:10px;border-radius:20px;background:#e9eef6;overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;background:var(--green);border-radius:20px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.between{display:flex;justify-content:space-between;align-items:center;gap:10px}
+input,select{background:#fff;border:1px solid #d7deea;border-radius:8px;padding:10px;color:var(--text);min-width:0}input[type=number]{width:120px}
+.form{display:flex;gap:9px;flex-wrap:wrap;margin:10px 0}.form input,.form select{flex:1;min-width:130px}
+table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:11px 9px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:650}
+.pill{font-size:11px;border-radius:20px;padding:4px 8px;background:#eff6ff;color:#1d4ed8}.danger{background:#fee2e2;color:#b91c1c}.secondary{background:#e9eef6;color:#334155}.green{background:#dcfce7;color:#166534}
+.list-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.list-item:last-child{border:0}
+.topic{display:flex;gap:9px;align-items:flex-start;padding:9px 3px;border-bottom:1px solid var(--line);font-size:13px}.topic input{margin-top:2px;accent-color:var(--green)}.topic.done span{text-decoration:line-through;color:#94a3b8}
+.subject{border:1px solid var(--line);border-radius:11px;margin:10px 0;overflow:hidden;background:#fff}.subject summary{padding:14px;cursor:pointer;font-weight:700}.subject-body{padding:0 14px 12px}
+.small-btn{padding:6px 9px;font-size:12px}.empty{color:var(--muted);font-size:13px;padding:12px 0}
+.chart{display:flex;align-items:end;gap:10px;height:180px;padding:15px 5px 0;border-bottom:1px solid var(--line)}.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:end;height:100%;gap:6px;min-width:0}.bar{width:min(34px,75%);background:#60a5fa;border-radius:6px 6px 0 0;min-height:2px}.bar-label{font-size:10px;color:var(--muted);white-space:nowrap}.bar-value{font-size:10px;color:var(--muted)}
+.countdown{font-size:34px;font-weight:800;color:var(--blue)}
+.notice{background:#eff6ff;border:1px solid #bfdbfe;padding:12px;border-radius:10px;color:#1e40af;font-size:13px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:20px}
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{height:auto;position:relative;padding:12px}.brand{padding:5px 8px 12px}.nav{display:flex;overflow-x:auto;gap:4px}.nav-label{display:none}.nav button{white-space:nowrap;width:auto;margin:0;padding:9px 11px}.main{padding:18px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.grid{grid-template-columns:1fr 1fr;gap:9px}.card{padding:13px}.main{padding:12px}.top{align-items:flex-start;flex-direction:column}.top h1{font-size:21px}table{font-size:11px}th,td{padding:8px 5px}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">🚆 RRB Station Master<br><span>PREPARATION HUB</span></div>
+  <div class="nav-label">Workspace</div>
+  <nav class="nav" id="nav">
+    <button class="active" data-page="dashboard">▦ Dashboard</button>
+    <button data-page="syllabus">☷ Complete Syllabus</button>
+    <button data-page="planner">▣ Study Planner</button>
+    <button data-page="revision">↻ Revision Manager</button>
+    <button data-page="mock">▤ Mock Tests</button>
+    <button data-page="hours">◷ Study Hours</button>
+    <button data-page="practice">✓ Practice Tracker</button>
+    <button data-page="settings">⚙ Settings & Backup</button>
+  </nav>
+</aside>
+
+<main class="main">
+<div class="top"><div><h1 id="pageTitle">Preparation Dashboard</h1><div class="sub">Your complete RRB Station Master CBT preparation workspace</div></div><div class="pill" id="todayLabel"></div></div>
+
+<section class="page active" id="dashboard">
+  <div class="grid">
+    <div class="card metric"><small>Syllabus completed</small><strong id="dashProgress">0%</strong><div class="progress"><span id="dashBar" style="width:0%"></span></div><div class="hint" id="topicCount">0 of 0 topics</div></div>
+    <div class="card metric"><small>Study time logged</small><strong id="dashHours">0h</strong><div class="hint">Total recorded hours</div></div>
+    <div class="card metric"><small>Mock tests taken</small><strong id="dashMocks">0</strong><div class="hint">Practice test history</div></div>
+    <div class="card metric"><small>Practice accuracy</small><strong id="dashAccuracy">0%</strong><div class="hint">Correct / attempted</div></div>
+  </div>
+  <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))">
+    <div class="card"><h2>Exam Countdown</h2><div class="countdown" id="dashCountdown">Set exam date</div><div class="muted" id="dashExamDate">Choose your target date in Settings.</div></div>
+    <div class="card"><h2>Today's tasks</h2><div id="todayTasks" class="empty">No tasks planned for today.</div></div>
+  </div>
+  <div class="card"><h2>Subject-wise syllabus progress</h2><div id="dashSubjects"></div></div>
+  <div class="card"><h2>Recent mock-test scores</h2><div id="mockChart" class="chart"></div><div class="muted" style="font-size:12px;margin-top:8px">Score percentage for your latest six tests.</div></div>
+</section>
+
+<section class="page" id="syllabus">
+  <div class="card"><div class="between"><div><h2>Complete CBT Syllabus</h2><div class="muted">Tick a topic after studying it and solving practice questions.</div></div><span class="pill">100 marks structure</span></div>
+  <div class="form"><input id="topicSearch" placeholder="Search syllabus topics..."><select id="topicFilter"><option value="all">All topics</option><option value="pending">Pending</option><option value="done">Completed</option></select></div>
+  <div id="syllabusList"></div></div>
+</section>
+
+<section class="page" id="planner">
+  <div class="card"><h2>Weekly & Monthly Study Planner</h2><div class="muted">Add a study target, choose its date and mark it complete.</div>
+    <div class="form"><input id="planTitle" placeholder="e.g. Complete percentage questions"><input type="date" id="planDate"><select id="planSubject"><option>Basic Science & Mathematics</option><option>Data Analysis & Interpretation</option><option>Logical Reasoning</option><option>Mental Reasoning</option><option>Revision</option><option>Mock Test</option></select><button onclick="addPlan()">Add target</button></div>
+    <div class="row" style="margin:10px 0"><button class="secondary" onclick="renderPlans('all')">All</button><button class="secondary" onclick="renderPlans('week')">Next 7 days</button><button class="secondary" onclick="renderPlans('month')">This month</button></div><div id="planList"></div>
+  </div>
+</section>
+
+<section class="page" id="revision">
+  <div class="card"><h2>Revision Manager</h2><div class="muted">Track up to three revision rounds for every syllabus topic.</div><div class="notice" style="margin:12px 0">Suggested method: Revision 1 after learning the topic, Revision 2 after a few days, Revision 3 during final revision.</div><div id="revisionList"></div></div>
+</section>
+
+<section class="page" id="mock">
+  <div class="card"><h2>Mock Test Tracker</h2><div class="muted">Enter the score shown by your test platform. Use the actual maximum marks for that test.</div>
+    <div class="form"><input type="text" id="mockName" placeholder="Test name (e.g. Mock 01)"><input type="date" id="mockDate"><input type="number" id="mockScore" placeholder="Score" min="0" step="0.01"><input type="number" id="mockMax" placeholder="Maximum marks" min="1" value="100"><button onclick="addMock()">Save test</button></div>
+    <div id="mockStats" class="notice">No mock tests recorded yet.</div><div style="overflow-x:auto"><table><thead><tr><th>Date</th><th>Test</th><th>Score</th><th>Percentage</th><th></th></tr></thead><tbody id="mockTable"></tbody></table></div>
+  </div>
+</section>
+
+<section class="page" id="hours">
+  <div class="card"><h2>Daily Study Hours Tracker</h2><div class="muted">Record the time you actually studied. You can add multiple sessions per day.</div>
+    <div class="form"><input type="date" id="hoursDate"><input type="number" id="hoursValue" placeholder="Hours" min="0.1" max="24" step="0.1"><select id="hoursSubject"><option>Basic Science & Mathematics</option><option>Data Analysis & Interpretation</option><option>Logical Reasoning</option><option>Mental Reasoning</option><option>Revision</option><option>Mock Test</option></select><input id="hoursNote" placeholder="What did you study?"><button onclick="addHours()">Add session</button></div>
+    <div class="grid" style="grid-template-columns:repeat(2,minmax(0,1fr))"><div class="card metric"><small>Total hours</small><strong id="totalHours">0h</strong></div><div class="card metric"><small>Average per logged day</small><strong id="avgHours">0h</strong></div></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Date</th><th>Subject</th><th>Hours</th><th>Note</th><th></th></tr></thead><tbody id="hoursTable"></tbody></table></div>
+  </div>
+</section>
+
+<section class="page" id="practice">
+  <div class="card"><h2>Question Practice & Accuracy</h2><div class="muted">Record correct and incorrect answers from each practice session. Accuracy excludes unattempted questions.</div>
+    <div class="form"><input type="date" id="practiceDate"><select id="practiceSubject"><option>Basic Science & Mathematics</option><option>Data Analysis & Interpretation</option><option>Logical Reasoning</option><option>Mental Reasoning</option></select><input type="number" id="practiceCorrect" placeholder="Correct" min="0"><input type="number" id="practiceWrong" placeholder="Wrong" min="0"><input type="number" id="practiceSkipped" placeholder="Skipped" min="0"><button onclick="addPractice()">Save practice</button></div>
+    <div class="grid" style="grid-template-columns:repeat(3,minmax(0,1fr))"><div class="card metric"><small>Questions attempted</small><strong id="practiceAttempted">0</strong></div><div class="card metric"><small>Correct answers</small><strong id="practiceCorrectTotal">0</strong></div><div class="card metric"><small>Accuracy</small><strong id="practiceAccuracy">0%</strong></div></div>
+    <div style="overflow-x:auto"><table><thead><tr><th>Date</th><th>Subject</th><th>Correct</th><th>Wrong</th><th>Skipped</th><th>Accuracy</th><th></th></tr></thead><tbody id="practiceTable"></tbody></table></div>
+  </div>
+</section>
+
+<section class="page" id="settings">
+  <div class="card"><h2>Exam Countdown Settings</h2><p class="muted">Enter your expected or officially announced exam date. You can change it later.</p><div class="form"><input type="date" id="examDate"><button onclick="saveExamDate()">Save exam date</button></div><div id="examStatus" class="notice">No exam date selected.</div></div>
+  <div class="card"><h2>Backup & Restore</h2><p class="muted">Export your data regularly. The backup includes syllabus progress, planner, revisions, mocks, study hours, practice records and exam date.</p><div class="row" style="margin-top:12px"><button onclick="exportData()">Download backup (JSON)</button><label class="pill" style="cursor:pointer;padding:11px">Import backup <input type="file" id="importFile" accept=".json,application/json" style="display:none" onchange="importData(event)"></label></div></div>
+  <div class="card"><h2>Reset application</h2><p class="muted">This permanently clears all tracker data stored in this browser.</p><button style="background:#dc2626;margin-top:10px" onclick="resetAll()">Reset all data</button></div>
+</section>
+<footer>RRB Station Master CBT Preparation Hub · Your effort today builds your result tomorrow.</footer>
+</main>
+</div>
+
+<script>
+const subjects=[
+{name:"Basic Science & Mathematics",marks:30,topics:["Number System","Ratio and Proportions","Averages","Percentages","Profit, Loss and Discounts","Time, Speed and Distance","Power and Work","Algebra","Linear Equations","Arithmetic Progression","LCM and HCF","Geometry","Trigonometry","Area and Volumes","Probability (Basic Level)","Statistics (Basic Level)","Units and Measurements","Mass, Weight and Density","Work, Power and Energy","Kinetic Energy","Friction","Speed and Velocity","Relative Velocity","Heat and Temperature","Basic Electricity","Levers and Simple Machines"]},
+{name:"Data Analysis & Interpretation",marks:30,topics:["Multi-source Data Analysis","Examination of Textual Data","Analysis of Tabular Data","Inference from Tables","Graphical Data Interpretation","Charts and Graphs","Scatter Plots","Pie Charts","Statistical Curve Distribution","Venn Diagrams","Data Sufficiency","Data Arrangement"]},
+{name:"Logical Reasoning",marks:20,topics:["Binary Logic","Syllogism","Clocks","Calendars","Assumptions","Blood Relations","Family Tree","Logic-Based Puzzles","Reading Comprehension: Passages","Main Idea of a Passage","Supporting Ideas","Application-Based Questions","Logical Structure of Paragraphs","Writing Style of Paragraphs","History-Based Comprehension","Society-Based Comprehension","Literature-Based Comprehension","Science-Based Comprehension","Environment-Based Comprehension","Abstract-Based Comprehension","Mythology-Based Comprehension","Technology-Based Comprehension","Culture-Based Comprehension"]},
+{name:"Mental Reasoning",marks:20,topics:["Analogy","Identifying Relationships Between Items","Applying Relationships to Another Pair","Series Completion","Number Series","Identifying Patterns in Sequences","Coding and Decoding","Ranking Problems","Arrangement-Based Problems"]}
+];
+const STORE="rrbStationMasterV2";
+const fresh=()=>({progress:{},plans:[],revisions:{},mocks:[],hours:[],practice:[],examDate:""});
+let data;
+try{data={...fresh(),...JSON.parse(localStorage.getItem(STORE)||"{}")}}catch(e){data=fresh()}
+const $=id=>document.getElementById(id);
+const today=()=>new Date().toISOString().slice(0,10);
+const key=(s,t)=>s+"|"+t;
+function save(){localStorage.setItem(STORE,JSON.stringify(data));renderAll()}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function allTopics(){return subjects.flatMap(s=>s.topics.map(t=>({subject:s.name,topic:t,key:key(s.name,t)})))}
+function pct(a,b){return b?Math.round(a/b*100):0}
+function showPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));document.querySelectorAll(".nav button").forEach(b=>b.classList.toggle("active",b.dataset.page===id));$("pageTitle").textContent=({dashboard:"Preparation Dashboard",syllabus:"Complete CBT Syllabus",planner:"Study Planner",revision:"Revision Manager",mock:"Mock Test Tracker",hours:"Study Hours Tracker",practice:"Practice & Accuracy",settings:"Settings & Backup"})[id];}
+$("nav").addEventListener("click",e=>{const b=e.target.closest("button[data-page]");if(b)showPage(b.dataset.page)});
+function renderSyllabus(){const q=$("topicSearch").value.toLowerCase(),f=$("topicFilter").value;let html="";
+subjects.forEach(s=>{const topics=s.topics.filter(t=>{const done=!!data.progress[key(s.name,t)];return t.toLowerCase().includes(q)&&(f==="all"||(f==="done"&&done)||(f==="pending"&&!done))});if(!topics.length)return;const done=s.topics.filter(t=>data.progress[key(s.name,t)]).length;html+=`<details class="subject" ${q||f!=="all"?"open":""}><summary>${esc(s.name)} · ${s.marks} marks · ${done}/${s.topics.length} completed (${pct(done,s.topics.length)}%)</summary><div class="subject-body">${topics.map(t=>{const k=key(s.name,t),d=!!data.progress[k];return `<label class="topic ${d?"done":""}"><input type="checkbox" ${d?"checked":""} onchange="toggleTopic('${esc(k)}',this.checked)"><span>${esc(t)}</span></label>`}).join("")}</div></details>`});
+$("syllabusList").innerHTML=html||'<div class="empty">No topics match your search.</div>'}
+function toggleTopic(k,v){data.progress[k]=v;save()}
+$("topicSearch").addEventListener("input",renderSyllabus);$("topicFilter").addEventListener("change",renderSyllabus);
+function addPlan(){const title=$("planTitle").value.trim(),date=$("planDate").value;if(!title||!date)return alert("Enter a target and date.");data.plans.push({id:Date.now(),title,date,subject:$("planSubject").value,done:false});$("planTitle").value="";save()}
+function renderPlans(filter="all"){let list=[...data.plans].sort((a,b)=>a.date.localeCompare(b.date));const now=new Date(),start=today(),end=new Date();end.setDate(end.getDate()+7);const month=start.slice(0,7);if(filter==="week")list=list.filter(x=>x.date>=start&&x.date<=end.toISOString().slice(0,10));if(filter==="month")list=list.filter(x=>x.date.startsWith(month));$("planList").innerHTML=list.length?list.map(x=>`<div class="list-item"><label style="display:flex;gap:9px;align-items:center"><input type="checkbox" ${x.done?"checked":""} onchange="togglePlan(${x.id})"><span style="${x.done?"text-decoration:line-through;color:#94a3b8":""}"><b>${esc(x.title)}</b><br><small class="muted">${esc(x.date)} · ${esc(x.subject)}</small></span></label><button class="small-btn danger" onclick="removeItem('plans',${x.id})">Delete</button></div>`).join(""):'<div class="empty">No study targets in this view.</div>'}
+function togglePlan(id){const x=data.plans.find(x=>x.id===id);if(x)x.done=!x.done;save()}
+function renderRevision(){let html="";subjects.forEach(s=>{html+=`<details class="subject"><summary>${esc(s.name)}</summary><div class="subject-body">${s.topics.map(t=>{const k=key(s.name,t),n=data.revisions[k]||0;return `<div class="list-item"><span>${esc(t)}</span><select aria-label="Revision count for ${esc(t)}" onchange="setRevision('${esc(k)}',this.value)"><option value="0" ${n===0?"selected":""}>Not revised</option><option value="1" ${n===1?"selected":""}>Revision 1 done</option><option value="2" ${n===2?"selected":""}>Revision 1 & 2 done</option><option value="3" ${n===3?"selected":""}>All 3 revisions done</option></select></div>`}).join("")}</div></details>`});$("revisionList").innerHTML=html}
+function setRevision(k,v){data.revisions[k]=Number(v);save()}
+function addMock(){const name=$("mockName").value.trim(),date=$("mockDate").value,score=Number($("mockScore").value),max=Number($("mockMax").value);if(!name||!date||!Number.isFinite(score)||max<=0||score<0||score>max)return alert("Enter a test name, date and valid score/max marks.");data.mocks.push({id:Date.now(),name,date,score,max});$("mockName").value="";$("mockScore").value="";save()}
+function renderMocks(){const rows=[...data.mocks].sort((a,b)=>b.date.localeCompare(a.date));$("mockTable").innerHTML=rows.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.name)}</td><td>${x.score}/${x.max}</td><td>${pct(x.score,x.max)}%</td><td><button class="small-btn danger" onclick="removeItem('mocks',${x.id})">Delete</button></td></tr>`).join("")||'<tr><td colspan="5">No tests recorded.</td></tr>';const avg=rows.length?Math.round(rows.reduce((a,x)=>a+x.score/x.max*100,0)/rows.length):0;$("mockStats").textContent=rows.length?`${rows.length} tests recorded · Average percentage: ${avg}% · Best: ${Math.max(...rows.map(x=>pct(x.score,x.max)))}%`:"No mock tests recorded yet."}
+function addHours(){const date=$("hoursDate").value,h=Number($("hoursValue").value);if(!date||!Number.isFinite(h)||h<=0||h>24)return alert("Enter a date and study hours between 0.1 and 24.");data.hours.push({id:Date.now(),date,h,subject:$("hoursSubject").value,note:$("hoursNote").value.trim()});$("hoursValue").value="";$("hoursNote").value="";save()}
+function renderHours(){const rows=[...data.hours].sort((a,b)=>b.date.localeCompare(a.date));const total=data.hours.reduce((a,x)=>a+x.h,0),days=new Set(data.hours.map(x=>x.date)).size;$("totalHours").textContent=total.toFixed(1)+"h";$("avgHours").textContent=(days?total/days:0).toFixed(1)+"h";$("hoursTable").innerHTML=rows.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.subject)}</td><td>${x.h}</td><td>${esc(x.note)}</td><td><button class="small-btn danger" onclick="removeItem('hours',${x.id})">Delete</button></td></tr>`).join("")||'<tr><td colspan="5">No study sessions recorded.</td></tr>'}
+function addPractice(){const date=$("practiceDate").value,c=Number($("practiceCorrect").value),w=Number($("practiceWrong").value),s=Number($("practiceSkipped").value||0);if(!date||![c,w,s].every(Number.isInteger)||c<0||w<0||s<0||c+w+s===0)return alert("Enter a date and valid non-negative question counts.");data.practice.push({id:Date.now(),date,subject:$("practiceSubject").value,c,w,s});$("practiceCorrect").value=$("practiceWrong").value=$("practiceSkipped").value="";save()}
+function renderPractice(){const rows=[...data.practice].sort((a,b)=>b.date.localeCompare(a.date));const c=rows.reduce((a,x)=>a+x.c,0),w=rows.reduce((a,x)=>a+x.w,0),s=rows.reduce((a,x)=>a+x.s,0),attempted=c+w;$("practiceAttempted").textContent=attempted;$("practiceCorrectTotal").textContent=c;$("practiceAccuracy").textContent=pct(c,attempted)+"%";$("practiceTable").innerHTML=rows.map(x=>`<tr><td>${esc(x.date)}</td><td>${esc(x.subject)}</td><td>${x.c}</td><td>${x.w}</td><td>${x.s}</td><td>${pct(x.c,x.c+x.w)}%</td><td><button class="small-btn danger" onclick="removeItem('practice',${x.id})">Delete</button></td></tr>`).join("")||'<tr><td colspan="7">No practice sessions recorded.</td></tr>'}
+function removeItem(type,id){if(!confirm("Delete this record?"))return;data[type]=data[type].filter(x=>x.id!==id);save()}
+function saveExamDate(){data.examDate=$("examDate").value;save()}
+function renderCountdown(){if(!data.examDate){$("dashCountdown").textContent="Not set";$("dashExamDate").textContent="Choose your target date in Settings.";return}const target=new Date(data.examDate+"T00:00:00"),now=new Date();now.setHours(0,0,0,0);const days=Math.ceil((target-now)/86400000);$("dashCountdown").textContent=days>0?days+" days":days===0?"Exam day!":"Date passed";$("dashExamDate").textContent="Target date: "+target.toLocaleDateString("en-IN",{day:"numeric",month:"long",year:"numeric"});$("examStatus").textContent=days>0?`${days} days remaining until your selected target date.`:days===0?"Your selected target date is today.":"The selected date has passed. Update it if needed."}
+function renderDashboard(){const topics=allTopics(),done=topics.filter(x=>data.progress[x.key]).length,percent=pct(done,topics.length),hours=data.hours.reduce((a,x)=>a+x.h,0),attempted=data.practice.reduce((a,x)=>a+x.c+x.w,0),correct=data.practice.reduce((a,x)=>a+x.c,0);$("dashProgress").textContent=percent+"%";$("dashBar").style.width=percent+"%";$("topicCount").textContent=`${done} of ${topics.length} topics`;$("dashHours").textContent=hours.toFixed(1)+"h";$("dashMocks").textContent=data.mocks.length;$("dashAccuracy").textContent=pct(correct,attempted)+"%";$("dashSubjects").innerHTML=subjects.map(s=>{const d=s.topics.filter(t=>data.progress[key(s.name,t)]).length,p=pct(d,s.topics.length);return `<div style="margin:13px 0"><div class="between"><b style="font-size:13px">${esc(s.name)}</b><small>${d}/${s.topics.length} · ${p}%</small></div><div class="progress"><span style="width:${p}%"></span></div></div>`}).join("");const todays=data.plans.filter(x=>x.date===today());$("todayTasks").innerHTML=todays.length?todays.map(x=>`<div class="list-item"><span>${x.done?"✓ ":""}${esc(x.title)}</span><small>${x.done?"Done":"Pending"}</small></div>`).join(""):'<div class="empty">No tasks planned for today.</div>';const recent=[...data.mocks].sort((a,b)=>a.date.localeCompare(b.date)).slice(-6);$("mockChart").innerHTML=recent.length?recent.map(x=>{const p=x.score/x.max*100;return `<div class="bar-wrap"><div class="bar-value">${Math.round(p)}%</div><div class="bar" style="height:${Math.max(2,p)}%"></div><div class="bar-label">${esc(x.name.slice(0,8))}</div></div>`}).join(""):'<div class="empty">Add mock tests to see your score chart.</div>';renderCountdown()}
+function renderAll(){renderSyllabus();renderPlans();renderRevision();renderMocks();renderHours();renderPractice();renderDashboard();$("examDate").value=data.examDate||""}
+function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="rrb-station-master-backup-"+today()+".json";a.click();URL.revokeObjectURL(url)}
+function importData(e){const file=e.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=()=>{try{const parsed=JSON.parse(reader.result);if(!parsed||typeof parsed!=="object"||!parsed.progress||!Array.isArray(parsed.plans)||!Array.isArray(parsed.mocks))throw Error();data={...fresh(),...parsed};save();alert("Backup imported successfully.")}catch(err){alert("Invalid backup file. Please select a backup exported by this app.")}e.target.value=""};reader.readAsText(file)}
+function resetAll(){if(!confirm("This will permanently erase all your RRB tracker data from this browser. Continue?"))return;data=fresh();localStorage.removeItem(STORE);renderAll();alert("All tracker data has been reset.")}
+$("todayLabel").textContent=new Date().toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+["planDate","mockDate","hoursDate","practiceDate"].forEach(id=>$(id).value=today());
+renderAll();
+</script>
+</body>
+</html>
